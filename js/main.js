@@ -38,7 +38,7 @@ const posts = [
         "media": "https://unsplash.it/600/400?image=24",
         "author": {
             "name": "Luca Formicola",
-            "image": null
+            "image": "https://unsplash.it/300/300?image=14"
         },
         "likes": 56,
         "created": "2021-04-03"
@@ -59,8 +59,10 @@ const posts = [
 
 const feed = document.querySelector(".posts-list");
 
+const options = { weekday: 'long', year: 'numeric', month: 'short', day: 'numeric' };
 
-posts.forEach(element => {
+
+posts.forEach((element, i) => {
     console.log(element);
     let post = `
             <div class="post">
@@ -82,7 +84,7 @@ posts.forEach(element => {
                 <div class="post__footer">
                     <div class="likes js-likes">
                         <div class="likes__cta">
-                            <a class="like-button  js-like-button" href="#" data-postid="${element.id}">
+                            <a class="like-button  js-like-button" data-postid="${element.id}">
                                 <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
                                 <span class="like-button__label">Mi Piace</span>
                             </a>
@@ -95,5 +97,23 @@ posts.forEach(element => {
             </div>
 `;
     feed.innerHTML += post;
-
+    let likeBtn = document.querySelectorAll(".like-button");
+    let likedPost = [];
+    likeBtn.forEach(likeButton => {
+        likeButton.addEventListener("click", () => {
+            likeButton.classList.toggle("like-button--liked");
+            let thisPostId = likeButton.getAttribute("data-postid");
+            let likeCounter = document.querySelector(`#like-counter-${thisPostId}`);
+            if(likeButton.classList.contains("like-button--liked")){
+                likeCounter.innerHTML = parseInt(likeCounter.innerHTML) + 1;
+                likedPost.push("N.Post: " + thisPostId);
+            }
+            else{
+                likeCounter.innerHTML = parseInt(likeCounter.innerHTML) - 1;
+            }
+            
+        });
+    });
+        
 });
+
